@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { image } from "../assets/Images";
+import { useNavigate } from "react-router-dom";
 
 const choices = ["rock", "paper", "scissor"];
 
@@ -9,23 +10,30 @@ function PlayWithComputer() {
   const [userPoint, setUserPoint] = useState(0);
   const [computerPoint, setComputerPoint] = useState(0);
   const [gameResult, setGameResult] = useState(null);
+  const [isGameEnded, setIsGameEnded] = useState(false);
+  const [showModal, setShowModal] = useState(false); // Track modal visibility
 
   const CardData = ({ point, decision }) => (
     <div className="container-flex justify-content-center justify-item-center mt-4">
-      <span>POINT : {point}</span>
+      <h2>POINT : {point}</h2>
       <div className="decision">
-        <img src={image[decision]} alt={image["pending"]} className="image" />
+        <img
+          src={image[decision]}
+          alt={image["pending"]}
+          style={{ width:"500px",height:"500px" }}
+          className="image"
+        />
       </div>
     </div>
   );
 
-  const handleGameResult = (decision, computerDecision) => {
-    if (decision === computerDecision) {
+  const handleGameResult = (userDecision, computerDecision) => {
+    if (userDecision === computerDecision) {
       setGameResult("draw");
     } else if (
-      (decision === "rock" && computerDecision === "scissor") ||
-      (decision === "paper" && computerDecision === "rock") ||
-      (decision === "scissor" && computerDecision === "paper")
+      (userDecision === "rock" && computerDecision === "scissor") ||
+      (userDecision === "paper" && computerDecision === "rock") ||
+      (userDecision === "scissor" && computerDecision === "paper")
     ) {
       setGameResult("win");
       setUserPoint(userPoint + 1);
@@ -35,24 +43,62 @@ function PlayWithComputer() {
     }
   };
 
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isGameEnded) {
+      setShowModal(true); // Show modal when game is ended
+    }
+
+    if (userPoint >= 3 || computerPoint >= 3) {
+      setIsGameEnded(true);
+    } else {
+      if (gameResult)
+        setTimeout(() => {
+          setUserDecision("pending");
+          setComputerDecision("pending");
+          setGameResult(null);
+        }, 2000);
+    }
+  }, [isGameEnded, userPoint, computerPoint, gameResult]);
+
   const handleClick = (decision) => {
     setUserDecision(decision);
     const randomIndex = Math.floor(Math.random() * 3);
     setComputerDecision(choices[randomIndex]);
 
     handleGameResult(decision, choices[randomIndex]);
-
-    setTimeout(() => {
-      setUserDecision("pending");
-      setComputerDecision("pending");
-      setGameResult(null);
-    }, 2000);
   };
 
+  const handleModalClose = (type) => {
+    if (type === 1) navigate("/");
+    else {
+      // setIsGameEnded(false);
+      // setUserPoint(0);
+      // setComputerPoint(0);
+      // setShowModal(false);
+      window.location.reload(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isGameEnded) {
+      setShowModal(true);
+    }
+  }, [isGameEnded]);
+
   return (
-    <div className="container-flex wh-100">
+    <div
+      className="container-flex text-white"
+      style={{
+        background:
+          "linear-gradient(to right, rgb(173, 83, 137), rgb(60, 16, 83))",
+          backgroundSize:"cover",
+          height:"100vh"
+      }}
+    >
       {gameResult && (
-        <h2 className="text-center mt-4 p-2">
+        <h2 className="text-center p-2">
           {gameResult === "win"
             ? "You won"
             : gameResult === "lose"
@@ -73,12 +119,45 @@ function PlayWithComputer() {
           {choices.map((choice) => (
             <img
               key={choice}
-              className="rounded mx-2 p-4"
+              className="rounded mx-2"
               src={image[choice]}
               onClick={() => handleClick(choice)}
               alt={choice}
+              style={{maxWidth:"200px",height:"200px"}}
             />
           ))}
+        </div>
+      )}
+      {showModal && (
+        <div className="card text-center position-absolute top-50 start-50 translate-middle">
+          <div className="card-header">Game Ended</div>
+          <div className="card-body">
+            {userPoint > computerPoint ? (
+              <p className="card-text">
+                You won the match by {userPoint - computerPoint} points
+              </p>
+            ) : (
+              <p className="card-text">
+                You lost the match by {computerPoint - userPoint} points
+              </p>
+            )}
+          </div>
+          <div className="card-footer">
+            <button
+              type="button"
+              className="btn btn-secondary me-2"
+              onClick={() => handleModalClose(1)}
+            >
+              Home
+            </button>
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={() => handleModalClose(2)}
+            >
+              Play again
+            </button>
+          </div>
         </div>
       )}
     </div>
