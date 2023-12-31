@@ -20,7 +20,7 @@ function PlayWithComputer() {
         <img
           src={image[decision]}
           alt={image["pending"]}
-          style={{ width:"500px",height:"500px" }}
+          style={{ width: "100%", maxWidth: "500px", height: "auto" }}
           className="image"
         />
       </div>
@@ -47,7 +47,7 @@ function PlayWithComputer() {
 
   useEffect(() => {
     if (isGameEnded) {
-      setShowModal(true); // Show modal when game is ended
+      setShowModal(true); // Show modal when the game is ended
     }
 
     if (userPoint >= 3 || computerPoint >= 3) {
@@ -73,10 +73,6 @@ function PlayWithComputer() {
   const handleModalClose = (type) => {
     if (type === 1) navigate("/");
     else {
-      // setIsGameEnded(false);
-      // setUserPoint(0);
-      // setComputerPoint(0);
-      // setShowModal(false);
       window.location.reload(false);
     }
   };
@@ -93,8 +89,12 @@ function PlayWithComputer() {
       style={{
         background:
           "linear-gradient(to right, rgb(173, 83, 137), rgb(60, 16, 83))",
-          backgroundSize:"cover",
-          height:"100vh"
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "20px",
       }}
     >
       {gameResult && (
@@ -107,10 +107,10 @@ function PlayWithComputer() {
         </h2>
       )}
       <div className="row justify-content-around">
-        <div className="col-4">
+        <div className="col-md-4">
           <CardData decision={userDecision} point={userPoint} />
         </div>
-        <div className="col-4">
+        <div className="col-md-4">
           <CardData decision={computerDecision} point={computerPoint} />
         </div>
       </div>
@@ -123,13 +123,13 @@ function PlayWithComputer() {
               src={image[choice]}
               onClick={() => handleClick(choice)}
               alt={choice}
-              style={{maxWidth:"200px",height:"200px"}}
+              style={{ maxWidth: "200px", height: "auto" }}
             />
           ))}
         </div>
       )}
       {showModal && (
-        <div className="card text-center position-absolute top-50 start-50 translate-middle">
+        <div className="card text-center">
           <div className="card-header">Game Ended</div>
           <div className="card-body">
             {userPoint > computerPoint ? (

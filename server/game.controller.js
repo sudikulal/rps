@@ -56,8 +56,8 @@ module.exports = (io) => {
             users.set([user1.id, { roomName }], [user2.id, { roomName }]);
             socket
               .in(roomName)
-              .emit("match found", { roomName: roomData.get(roomName) });
-            socket.emit("match found", { roomName: roomData.get(roomName) });
+              .emit("match found", { [roomName]: roomData.get(roomName) });
+            socket.emit("match found", { [roomName]: roomData.get(roomName) });
           }
         } catch (error) {
           console.log(error);
@@ -91,27 +91,27 @@ module.exports = (io) => {
 
             if (opponent.decision) {
               const winner = decideWinner(user.decision, opponent.decision);
-              user.decision = opponent.decision = 0;
 
               if (winner) {
                 socket.emit("game result", {
                   status: winner === 1 ? "you won" : "you lost",
-                  opponent_descision: opponent.decision,
+                  opponent_decision: opponent.decision,
                 });
                 socket.to(opponentSocketId).emit("game result", {
                   status: winner === 2 ? "you won" : "you lost",
-                  opponent_descision: user.decision,
+                  opponent_decision: user.decision,
                 });
               } else {
                 socket.in(roomName).emit("game result", {
                   status: "draw",
-                  opponent_descision: user.decision,
+                  opponent_decision: user.decision,
                 });
                 socket.emit("game draw", {
                   status: "draw",
-                  opponent_descision: user.decision,
+                  opponent_decision: user.decision,
                 });
               }
+              user.decision = opponent.decision = 0;
             }
           }
         } catch (error) {
@@ -161,7 +161,7 @@ module.exports = (io) => {
             if (user.roomName) {
               socket.broadcast
                 .to(user.roomName)
-                .emit("opponent disconnected", {});
+                .emit("opponent left", {});
               roomData.delete(user.roomName);
             } else {
               const index = waitingUsers.indexOf(socket.id);
