@@ -106,9 +106,9 @@ module.exports = (io) => {
                   status: "draw",
                   opponent_decision: user.decision,
                 });
-                socket.emit("game draw", {
+                socket.emit("game result", {
                   status: "draw",
-                  opponent_decision: user.decision,
+                  opponent_decision: opponent.decision,
                 });
               }
               user.decision = opponent.decision = 0;
@@ -121,14 +121,16 @@ module.exports = (io) => {
 
       socket.on("create room", () => {
         try {
+          console.log("room created");
           const roomName = generateRoom();
           socket.join(roomName);
           users.set(socket.id, { roomName });
-          roomData.set(
-            roomData.set(roomName, {
-              [socket.id]: {},
-            })
-          );
+
+          roomData.set(roomName, {
+            [socket.id]: {},
+          });
+
+          socket.emit("room created", { roomName });
         } catch (error) {
           console.log(error);
         }
@@ -146,8 +148,8 @@ module.exports = (io) => {
 
           roomData.set(roomName, roomDetail);
 
-          socket.in(roomName).emit("match found", { roomName: roomDetail });
-          socket.emit("match found", { roomName: roomDetail });
+          socket.in(roomName).emit("match found", { [roomName]: roomDetail });
+          socket.emit("match found", { [roomName]: roomDetail });
         } catch (error) {
           console.error(error);
         }
@@ -159,9 +161,7 @@ module.exports = (io) => {
 
           if (user) {
             if (user.roomName) {
-              socket.broadcast
-                .to(user.roomName)
-                .emit("opponent left", {});
+              socket.broadcast.to(user.roomName).emit("opponent left", {});
               roomData.delete(user.roomName);
             } else {
               const index = waitingUsers.indexOf(socket.id);
