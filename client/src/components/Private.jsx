@@ -113,7 +113,7 @@ function Private() {
           className="d-flex justify-content-center align-items-center vh-100"
           style={{
             backgroundImage:
-              "linear-gradient(230deg, rgba(13, 13, 13, 0.02) 0%)",
+              "linear-gradient(230deg, rgba(13, 13, 13, 0.02) 0%, rgba(13, 13, 13, 0.02) 50%,rgba(255, 255, 255, 0.02) 50%, rgba(255, 255, 255, 0.02) 100%),linear-gradient(44deg, rgba(191, 191, 191, 0.03) 0%, rgba(191, 191, 191, 0.03) 50%,rgba(20, 20, 20, 0.03) 50%, rgba(20, 20, 20, 0.03) 100%),linear-gradient(197deg, rgba(229, 229, 229, 0.03) 0%, rgba(229, 229, 229, 0.03) 50%,rgba(39, 39, 39, 0.03) 50%, rgba(39, 39, 39, 0.03) 100%),linear-gradient(352deg, rgba(160, 160, 160, 0.01) 0%, rgba(160, 160, 160, 0.01) 50%,rgba(98, 98, 98, 0.01) 50%, rgba(98, 98, 98, 0.01) 100%),linear-gradient(75deg, rgba(36, 36, 36, 0.03) 0%, rgba(36, 36, 36, 0.03) 50%,rgba(238, 238, 238, 0.03) 50%, rgba(238, 238, 238, 0.03) 100%),linear-gradient(188deg, rgba(59, 59, 59, 0.03) 0%, rgba(59, 59, 59, 0.03) 50%,rgba(163, 163, 163, 0.03) 50%, rgba(163, 163, 163, 0.03) 100%),linear-gradient(208deg, rgba(33, 33, 33, 0.03) 0%, rgba(33, 33, 33, 0.03) 50%,rgba(160, 160, 160, 0.03) 50%, rgba(160, 160, 160, 0.03) 100%),linear-gradient(331deg, rgba(92, 92, 92, 0.02) 0%, rgba(92, 92, 92, 0.02) 50%,rgba(6, 6, 6, 0.02) 50%, rgba(6, 6, 6, 0.02) 100%),linear-gradient(290deg, rgba(16, 16, 16, 0.02) 0%, rgba(16, 16, 16, 0.02) 50%,rgba(163, 163, 163, 0.02) 50%, rgba(163, 163, 163, 0.02) 100%),linear-gradient(90deg, rgb(76, 21, 98),rgb(166, 10, 148))",
           }}
         >
           <div className="privateType text-center">

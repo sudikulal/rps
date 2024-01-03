@@ -132,7 +132,7 @@ const Gameplay = ({socket,room}) => {
 
   return (
     <div
-      className="game"
+      className="game container-fluid"
       id="game"
       style={{
         background:
@@ -147,10 +147,10 @@ const Gameplay = ({socket,room}) => {
     >
       {gameResult && <h2 className="text-center p-2">{gameResult}</h2>}
       <div className="row justify-content-around">
-        <div className="col-4">
+        <div className="col-12 col-md-6">
           <CardData decision={userDecision} point={userPoint} />
         </div>
-        <div className="col-4">
+        <div className="col-12 col-md-6">
           <CardData decision={opponentDecision} point={opponentPoint} />
         </div>
       </div>
@@ -206,13 +206,13 @@ const Gameplay = ({socket,room}) => {
 
 const CardData = ({ point, decision }) => (
   <div className="container-flex justify-content-center justify-item-center mt-4">
-    <h2>POINT : {point}</h2>
+    <h2>POINT: {point}</h2>
     <div className="decision">
       <img
         src={image[decision]}
         alt={image["pending"]}
-        style={{ width: "500px", height: "500px" }}
-        className="image"
+        style={{ maxWidth: "100%", height: "auto" }}
+        className="image img-fluid"
       />
     </div>
   </div>
