@@ -93,7 +93,7 @@ const Gameplay = ({socket,room}) => {
         socket.close();
       }
     };
-  }, []);
+  }, [socket,navigate]);
 
   useEffect(() => {
     if (isGameEnded) {
